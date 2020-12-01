@@ -35,7 +35,7 @@ public class Matrix4 {
         // not using the actual values to make it more clear where in the matrix they are
         ret.elements[0 + 0 * 4] = 2.0f / (right - left);
         ret.elements[1 + 1 * 4] = 2.0f / (top - bottom);
-        ret.elements[12 + 2 * 4] = 2.0f / (near - far);
+        ret.elements[1 + 2 * 4] = 2.0f / (near - far);
         ret.elements[0 + 3 * 4] = (left + right) / (left - right);
         ret.elements[1 + 3 * 4] = (bottom + top) / (bottom - top);
         ret.elements[2 + 3 * 4] = (far + near) / (far - near);

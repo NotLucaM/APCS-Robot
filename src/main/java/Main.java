@@ -2,12 +2,13 @@ import input.Input;
 import math.Matrix4;
 import objects.Background;
 import org.lwjgl.glfw.*;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.system.*;
 
 import java.nio.*;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
@@ -19,7 +20,7 @@ public class Main implements Runnable {
     private boolean running;
     private long window;
 
-    Background level = new Background();
+    Background level;
 
     public void start() {
         running = true;
@@ -74,6 +75,10 @@ public class Main implements Runnable {
         glfwMakeContextCurrent(window);
         glfwSwapInterval(1);
         glfwShowWindow(window);
+
+        GL.createCapabilities();
+
+        level = new Background();
     }
 
     private void update() {

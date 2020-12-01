@@ -9,8 +9,6 @@ public class Background implements GameObject {
     private Shader shader = new Shader("shaders/bg.vert", "shaders/bg.frag");
 
     public Background() {
-        shader.setUniformMat4f("projectionMatrix", projectionMatrix);
-
         float[] vertices = new float[] {
                 -10.0f, -10.0f * 9.0f / 16.0f, 0.0f,
                 -10.0f,  10.0f * 9.0f / 16.0f, 0.0f,
