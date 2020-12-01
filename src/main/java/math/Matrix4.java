@@ -3,17 +3,18 @@ package math;
 import org.lwjgl.BufferUtils;
 
 import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
 
 public class Matrix4 {
 
     static final int size = 4 * 4; // not writing 16 to make it obv that its a 4x4 matrix instead of a 2x8 matrix
-    public double[] elements = new double[size]; // not and array of arrays because its a constant size
+    public float[] elements = new float[size]; // not and array of arrays because its a constant size
 
     public Matrix4() {
 
     }
 
-    public Matrix4(double[] elements) {
+    public Matrix4(float[] elements) {
         if (elements.length == size) {
             this.elements = elements;
         } else {
@@ -22,13 +23,13 @@ public class Matrix4 {
     }
 
     public static Matrix4 identity() {
-        return new Matrix4(new double[]{1, 0, 0, 0,
-                                        0, 1, 0, 0,
-                                        0, 0, 1, 0,
-                                        0, 0, 0, 1});
+        return new Matrix4(new float[]{1, 0, 0, 0,
+                                       0, 1, 0, 0,
+                                       0, 0, 1, 0,
+                                       0, 0, 0, 1});
     }
 
-    public static Matrix4 orthographic(double left, double right, double bottom, double top, double near, double far) {
+    public static Matrix4 orthographic(float left, float right, float bottom, float top, float near, float far) {
         Matrix4 ret = identity();
 
         // not using the actual values to make it more clear where in the matrix they are
@@ -50,11 +51,10 @@ public class Matrix4 {
         return ret;
     }
 
-    public static Matrix4 rotate(double radians) {
+    public static Matrix4 rotate(float radians) {
         Matrix4 ret = identity();
-        double r = radians;
-        double cos = Math.cos(r);
-        double sin = Math.sin(r);
+        float cos = (float) Math.cos(radians);
+        float sin = (float) Math.sin(radians);
 
         ret.elements[0 + 0 * 4] = cos;
         ret.elements[1 + 0 * 4] = sin;
@@ -79,7 +79,7 @@ public class Matrix4 {
         return result;
     }
 
-    public DoubleBuffer toFloatBuffer() {
-        return BufferUtils.createDoubleBuffer(size).put(elements).flip();
+    public FloatBuffer toFloatBuffer() {
+        return BufferUtils.createFloatBuffer(size).put(elements).flip();
     }
 }
