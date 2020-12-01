@@ -11,10 +11,8 @@ public abstract class AbstractRobot implements GameObject {
     protected Color color;
 
     public void draw() {
-        glColor3i(color.r, color.g, color.b);
+
     }
 
     public abstract void update();
-
-    protected
 }

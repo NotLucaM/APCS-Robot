@@ -1,10 +1,13 @@
 import input.Input;
+import math.Matrix4;
+import objects.Background;
 import org.lwjgl.glfw.*;
 import org.lwjgl.system.*;
 
 import java.nio.*;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
@@ -15,6 +18,8 @@ public class Main implements Runnable {
 
     private boolean running;
     private long window;
+
+    Background level = new Background();
 
     public void start() {
         running = true;
@@ -79,6 +84,10 @@ public class Main implements Runnable {
     }
 
     private void render() {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        level.draw();
+
         glfwSwapBuffers(window);
     }
 
