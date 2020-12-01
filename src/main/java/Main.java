@@ -13,14 +13,12 @@ public class Main implements Runnable {
     private final static int width = 1280;
     private final static int height = 720;
 
-    private Thread thread;
     private boolean running;
     private long window;
 
     public void start() {
         running = true;
-        thread = new Thread(this, "Game");
-        thread.start();
+        run();
     }
 
     public void run() {
