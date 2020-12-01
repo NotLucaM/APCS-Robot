@@ -1,5 +1,6 @@
 package graphics;
 
+import math.Matrix4;
 import math.Vector3;
 import utils.ShaderUtils;
 
@@ -9,6 +10,9 @@ import java.util.Map;
 import static org.lwjgl.opengl.GL20.*;
 
 public class Shader {
+
+    public static final int VERTEX_ATTRIB = 0;
+    public static final int TCOORD_ATTRIB = 1;
 
     private final int id;
 
@@ -46,6 +50,10 @@ public class Shader {
 
     public void setUniform3f(String name, Vector3 v) {
         glUniform3f(getUniformLocation(name), v.x, v.y, v.z);
+    }
+
+    public void setUniformMat4f(String name, Matrix4 m) {
+        glUniformMatrix4fv(getUniformLocation(name), false, m.elements);
     }
 
     public void enable() {
