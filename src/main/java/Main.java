@@ -1,3 +1,4 @@
+import input.Input;
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
@@ -54,6 +55,8 @@ public class Main implements Runnable {
             throw new RuntimeException("Failed to create the GLFW window");
         }
 
+        glfwSetKeyCallback(window, new Input());
+
         try (MemoryStack stack = stackPush()) {
             IntBuffer pWidth = stack.mallocInt(1);
             IntBuffer pHeight = stack.mallocInt(1);
@@ -76,6 +79,9 @@ public class Main implements Runnable {
 
     private void update() {
         glfwPollEvents();
+        if (Input.keys[GLFW_KEY_ESCAPE]) {
+            glfwSetWindowShouldClose(window, true);
+        }
     }
 
     private void render() {
