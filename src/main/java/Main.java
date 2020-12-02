@@ -1,16 +1,10 @@
 import input.Input;
-import math.Matrix4;
 import objects.Background;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.system.*;
-
-import java.nio.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 public class Main implements Runnable {
@@ -41,52 +35,32 @@ public class Main implements Runnable {
     }
 
     private void init() {
-        GLFWErrorCallback.createPrint(System.err).set();
-
         if (!glfwInit()) {
-            throw new IllegalStateException("Unable to initialize GLFW");
+            System.err.println("Could not initialize GLFW!");
+            return;
         }
 
-        glfwDefaultWindowHints();
-        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-
-        window = glfwCreateWindow(300, 300, "Hello World!", NULL, NULL);
+        glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+        window = glfwCreateWindow(width, height, "Flappy", NULL, NULL);
         if (window == NULL) {
-            throw new RuntimeException("Failed to create the GLFW window");
+            System.err.println("Could not create GLFW window!");
+            return;
         }
+
+        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        glfwSetWindowPos(window, (vidmode.width() - width) / 2, (vidmode.height() - height) / 2);
+
+        glfwSetKeyCallback(window, new Input());
 
         glfwMakeContextCurrent(window);
-        glfwSwapInterval(1);
         glfwShowWindow(window);
+        GL.createCapabilities();
 
         glEnable(GL_DEPTH_TEST);
         glActiveTexture(GL_TEXTURE1);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        glfwSetKeyCallback(window, new Input());
-
-        try (MemoryStack stack = stackPush()) {
-            IntBuffer pWidth = stack.mallocInt(1);
-            IntBuffer pHeight = stack.mallocInt(1);
-
-            glfwGetWindowSize(window, pWidth, pHeight);
-
-            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-            glfwSetWindowPos(
-                    window,
-                    (vidmode.width() - pWidth.get(0)) / 2,
-                    (vidmode.height() - pHeight.get(0)) / 2
-            );
-        }
-
-        GL.createCapabilities();
+        System.out.println("OpenGL: " + glGetString(GL_VERSION));
 
         level = new Background();
     }
