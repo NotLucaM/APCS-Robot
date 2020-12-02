@@ -12,6 +12,7 @@ public class Background implements GameObject {
     private Shader shader = new Shader("shaders/bg.vert", "shaders/bg.frag");
     private VertexArray mesh;
     private Texture texture;
+    private int map = 0;
 
     public Background() {
         float[] vertices = new float[] {
@@ -33,6 +34,8 @@ public class Background implements GameObject {
                 1, 1
         };
 
+        shader.setUniformMat4f("projectionMatrix", projectionMatrix);
+        shader.setUniform1i("tex", 1);
         mesh = new VertexArray(vertices, indices, tcs);
         texture = new Texture("shaders/bg.jpg");
     }
@@ -40,7 +43,6 @@ public class Background implements GameObject {
     @Override
     public void draw() {
         shader.enable();
-        shader.setUniformMat4f("ml_matrix", Matrix4.translate(new Vector3(0, 0, 0)).multiply(Matrix4.rotate(0)));
         texture.bind();
         mesh.render();
         shader.disable();

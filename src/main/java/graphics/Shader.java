@@ -14,6 +14,7 @@ public class Shader {
     public static final int VERTEX_ATTRIB = 0;
     public static final int TCOORD_ATTRIB = 1;
 
+    private boolean enabled = false;
     private final int id;
 
     private Map<String, Integer> cache = new HashMap<>();
@@ -32,28 +33,29 @@ public class Shader {
         }
     }
 
-    public void setUniform1i(String name, int x) {
-        glUniform1i(getUniformLocation(name), x);
+    public void setUniform1i(String name, int value) {
+        if (!enabled) enable();
+        glUniform1i(getUniformLocation(name), value);
     }
 
-    public void setUniform1f(String name, float x) {
-        glUniform1f(getUniformLocation(name), x);
+    public void setUniform1f(String name, float value) {
+        if (!enabled) enable();
+        glUniform1f(getUniformLocation(name), value);
     }
 
     public void setUniform2f(String name, float x, float y) {
+        if (!enabled) enable();
         glUniform2f(getUniformLocation(name), x, y);
     }
 
-    public void setUniform3f(String name, float x, float y, float z) {
-        glUniform3f(getUniformLocation(name), x, y, z);
+    public void setUniform3f(String name, Vector3 vector) {
+        if (!enabled) enable();
+        glUniform3f(getUniformLocation(name), vector.x, vector.y, vector.z);
     }
 
-    public void setUniform3f(String name, Vector3 v) {
-        glUniform3f(getUniformLocation(name), v.x, v.y, v.z);
-    }
-
-    public void setUniformMat4f(String name, Matrix4 m) {
-        glUniformMatrix4fv(getUniformLocation(name), false, m.elements);
+    public void setUniformMat4f(String name, Matrix4 matrix) {
+        if (!enabled) enable();
+        glUniformMatrix4fv(getUniformLocation(name), false, matrix.toFloatBuffer());
     }
 
     public void enable() {
