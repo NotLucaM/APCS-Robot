@@ -1,6 +1,5 @@
-import input.Input;
-import objects.Background;
-import objects.Robot;
+import engine.input.Input;
+
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 
@@ -15,9 +14,6 @@ public class Main implements Runnable {
 
     private boolean running;
     private long window;
-
-    Background level;
-    Robot robot;
 
     public void start() {
         running = true;
@@ -63,9 +59,6 @@ public class Main implements Runnable {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         System.out.println("OpenGL: " + glGetString(GL_VERSION));
-
-        level = new Background();
-        robot = new Robot();
     }
 
     private void update() {
@@ -77,9 +70,6 @@ public class Main implements Runnable {
 
     private void render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        level.draw();
-        robot.draw();
 
         int error = glGetError();
         if (error != GL_NO_ERROR) {
