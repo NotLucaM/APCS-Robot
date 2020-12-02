@@ -1,18 +1,7 @@
-#version 330 core
+#version 120 core
 
-layout (location = 0) out vec4 color;
+varying vec4 vertColor;
 
-in DATA
-{
-    vec2 tc;
-    vec3 position;
-} fs_in;
-
-uniform vec2 bird;
-uniform sampler2D tex;
-
-void main()
-{
-    color = texture(tex, fs_in.tc);
-    color *= 2.0 / (length(bird - fs_in.position.xy) + 2.5) + 0.5;
+void main(){
+    gl_FragColor = vertColor;
 }
