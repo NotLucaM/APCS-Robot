@@ -4,7 +4,6 @@ import graphics.Shader;
 import graphics.Texture;
 import graphics.VertexArray;
 import math.Matrix4;
-import math.Vector3;
 
 public class Background implements GameObject {
 

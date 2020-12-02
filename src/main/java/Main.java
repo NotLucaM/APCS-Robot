@@ -1,5 +1,6 @@
 import input.Input;
 import objects.Background;
+import objects.Robot;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 
@@ -16,6 +17,7 @@ public class Main implements Runnable {
     private long window;
 
     Background level;
+    Robot robot;
 
     public void start() {
         running = true;
@@ -41,7 +43,7 @@ public class Main implements Runnable {
         }
 
         glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-        window = glfwCreateWindow(width, height, "Flappy", NULL, NULL);
+        window = glfwCreateWindow(width, height, "Robot", NULL, NULL);
         if (window == NULL) {
             System.err.println("Could not create GLFW window!");
             return;
@@ -63,6 +65,7 @@ public class Main implements Runnable {
         System.out.println("OpenGL: " + glGetString(GL_VERSION));
 
         level = new Background();
+        robot = new Robot();
     }
 
     private void update() {
@@ -76,6 +79,12 @@ public class Main implements Runnable {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         level.draw();
+        robot.draw();
+
+        int error = glGetError();
+        if (error != GL_NO_ERROR) {
+            System.out.println(error);
+        }
 
         glfwSwapBuffers(window);
     }
