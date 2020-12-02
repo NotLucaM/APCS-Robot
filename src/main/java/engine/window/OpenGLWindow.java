@@ -25,6 +25,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class OpenGLWindow {
 
+    private Drawer drawer = new Drawer();
+    private Updater updater = new Updater();
+
     private int width, height;
     private int x, y, z;
     private String name;
@@ -70,10 +73,50 @@ public class OpenGLWindow {
         return window;
     }
 
+    private void loop() {
+        GL.createCapabilities();
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+        State state = new State();
+
+        while (!glfwWindowShouldClose(window)) {
+            updater.update(state);
+            drawer.draw();
+        }
+    }
+
     public long getWindow() {
         if (this.window == -1) {
             init();
         }
         return this.window;
+    }
+
+    public void setShowCursor(boolean show) {
+        int mouse = GLFW.GLFW_CURSOR_HIDDEN;
+        if (show) {
+            mouse = GLFW.GLFW_CURSOR_NORMAL;
+        }
+
+        GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, mouse);
+    }
+
+    public void setColor(double r, double g, double b, double a) {
+        glColor4d(r / 255, g / 255, b / 255, a / 255); // OpenGL uses percentages
+    }
+
+    public void setColor(double r, double g, double b) {
+        glColor3d(r / 255, g / 255, b / 255); // OpenGL uses percentages
+    }
+
+    public void fillRect(double x, double y, double sX, double sY) {
+        glBegin(GL_TRIANGLE_FAN);
+
+        glVertex2d(x, y);
+        glVertex2d(x + sX, y);
+        glVertex2d(x + sX, y + sY);
+        glVertex2d(x, y + sY);
+
+        glEnd();
     }
 }
