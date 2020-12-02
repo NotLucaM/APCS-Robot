@@ -1,6 +1,7 @@
 package engine.window;
 
 import engine.input.Input;
+import objects.Robot;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWImage;
@@ -29,18 +30,16 @@ public class OpenGLWindow {
     private Updater updater = new Updater();
 
     private int width, height;
-    private int x, y, z;
     private String name;
     private long window = -1;
 
-    public OpenGLWindow(String name, int x, int y, int z) {
+    public OpenGLWindow(String name, int width, int height) {
         this.name = name;
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.width = width;
+        this.height = height;
     }
 
-    public long init() {
+    public void init() {
         GLFWErrorCallback.createPrint(System.err).set();
 
         if (!glfwInit()) {
@@ -70,7 +69,9 @@ public class OpenGLWindow {
         GLFW.glfwSwapInterval(1);
         glfwShowWindow(window);
 
-        return window;
+        addObject(new Robot(-1, -0.5, 0.1, 0.1));
+
+        this.loop();
     }
 
     private void loop() {
@@ -80,8 +81,9 @@ public class OpenGLWindow {
         State state = new State();
 
         while (!glfwWindowShouldClose(window)) {
+            glfwPollEvents();
             updater.update(state);
-            drawer.draw();
+            drawer.draw(this);
         }
     }
 
@@ -118,5 +120,10 @@ public class OpenGLWindow {
         glVertex2d(x, y + sY);
 
         glEnd();
+    }
+
+    public void addObject(GameObject object) {
+        drawer.addDrawable(object);
+        updater.addUpdatable(object);
     }
 }

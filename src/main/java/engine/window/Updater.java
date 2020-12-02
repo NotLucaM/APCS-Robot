@@ -11,4 +11,8 @@ public class Updater {
             object.update(state);
         }
     }
+
+    public void addUpdatable(Updatable object) {
+        objects.add(object);
+    }
 }
