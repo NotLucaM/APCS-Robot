@@ -43,8 +43,10 @@ public class Robot implements GameObject {
         window.setColor(255, 1, 3);
         window.fillRect(x, y, sX, sY);
 
-        if (xGraph != null && wantedGraph != null) {
+        if (xGraph != null) {
             xGraph.draw(window);
+        }
+        if (wantedGraph != null) {
             wantedGraph.draw(window);
         }
     }
@@ -66,8 +68,10 @@ public class Robot implements GameObject {
         x += velocity * deltaTime;
 
         // If we have a graph we output to, add it there
-        if (xGraph != null && wantedGraph != null) {
+        if (xGraph != null) {
             xGraph.addPoint(x);
+        }
+        if (wantedGraph != null) {
             wantedGraph.addPoint(wantedX);
         }
     }
