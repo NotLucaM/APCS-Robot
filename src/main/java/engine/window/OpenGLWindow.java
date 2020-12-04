@@ -26,9 +26,9 @@ public class OpenGLWindow {
     private Drawer drawer = new Drawer();
     private Updater updater = new Updater();
 
-    public final KeyboardInput keyboardInput = new KeyboardInput();
-    public final MouseInput mouseInput = new MouseInput();
-    public final MouseLocation mouseLocation = new MouseLocation();
+    public final KeyboardInput keyboardInput;
+    public final MouseInput mouseInput;
+    public final MouseLocation mouseLocation;
 
     public int width, height;
     private String name;
@@ -38,6 +38,9 @@ public class OpenGLWindow {
         this.name = name;
         this.width = width;
         this.height = height;
+        keyboardInput = new KeyboardInput();
+        mouseInput = new MouseInput();
+        mouseLocation = new MouseLocation(width, height);
     }
 
     public void init() {
