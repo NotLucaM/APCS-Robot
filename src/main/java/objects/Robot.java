@@ -5,7 +5,7 @@ import engine.window.*;
 public class Robot implements GameObject {
 
     private double x, y, sX, sY;
-    private double wantedX = 0.5, wantedY;
+    private double wantedX, wantedY;
     private long lastTime;
 
     private double force;
@@ -30,6 +30,8 @@ public class Robot implements GameObject {
 
     public Robot(double x, double y, double sX, double sY, Graph wantedGraph, Graph xGraph) {
         this.x = x;
+        this.wantedX = x;
+        this.wantedY = y;
         this.y = y;
         this.sX = sX;
         this.sY = sY;
@@ -52,6 +54,10 @@ public class Robot implements GameObject {
 
     @Override
     public void update(State state) {
+        if (state.mousePressed) {
+            wantedX = state.mouseX;
+        }
+
         long deltaTime = 1;
         double pid = pidX(deltaTime);
         double force = pid * mass - Math.signum(pid + velocity) * Math.min(friction * mass * 9.8, Math.abs(pid + velocity));
@@ -63,11 +69,7 @@ public class Robot implements GameObject {
             xGraph.addPoint(x);
             wantedGraph.addPoint(wantedX);
         }
-        System.out.printf("%.7f %.7f %.7f %.7f %.3f\n", pid, force, acceleration, velocity, x);
-
-        if (Math.random() >= 0.99) {
-            this.wantedX = Math.random() * 2 - 1;
-        }
+//        System.out.printf("%.7f %.7f %.7f %.7f %.3f\n", pid, force, acceleration, velocity, x);
     }
 
     public double pidX(long deltaTime) {

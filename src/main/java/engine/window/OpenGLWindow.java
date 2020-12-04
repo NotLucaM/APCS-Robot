@@ -1,6 +1,8 @@
 package engine.window;
 
 import engine.input.KeyboardInput;
+import engine.input.MouseInput;
+import engine.input.MouseLocation;
 import engine.math.Vector2;
 import objects.Graph;
 import objects.Pointer;
@@ -23,9 +25,12 @@ public class OpenGLWindow {
 
     private Drawer drawer = new Drawer();
     private Updater updater = new Updater();
-    private KeyboardInput keyboardInput = new KeyboardInput();
 
-    private int width, height;
+    public final KeyboardInput keyboardInput = new KeyboardInput();
+    public final MouseInput mouseInput = new MouseInput();
+    public final MouseLocation mouseLocation = new MouseLocation();
+
+    public int width, height;
     private String name;
     private long window = -1;
 
@@ -53,6 +58,8 @@ public class OpenGLWindow {
         }
 
         glfwSetKeyCallback(window, keyboardInput);
+        glfwSetMouseButtonCallback(window, mouseInput);
+        glfwSetCursorPosCallback(window, mouseLocation);
 
         try (MemoryStack stack = stackPush()) {
             IntBuffer pWidth = stack.mallocInt(1); // int*
@@ -66,7 +73,7 @@ public class OpenGLWindow {
         GLFW.glfwSwapInterval(1);
         glfwShowWindow(window);
 
-        addObject(new Pointer());
+        addObject(new Pointer(-1));
         addObject(new Robot(-1, -0.5, 0.1, 0.1,
                 new Graph(-0.98, -0.98, 1.9, 0.2, -1, 1, new Color(255, 0, 0)),
                 new Graph(-0.98, -0.98, 1.9, 0.2, -1, 1, new Color(0, 255, 0))));
@@ -82,6 +89,7 @@ public class OpenGLWindow {
 
         while (!glfwWindowShouldClose(window)) {
             glfwPollEvents();
+            state.update(this);
             updater.update(state);
             drawer.draw(this);
         }
