@@ -10,7 +10,7 @@ public class Pointer implements GameObject {
     @Override
     public void draw(OpenGLWindow window) {
         window.setColor(1, 1, 255);
-        window.fillRect(0.7, -1, 0.05, 2);
+        window.fillRect(0.5, -1, 0.005, 2);
     }
 
     @Override

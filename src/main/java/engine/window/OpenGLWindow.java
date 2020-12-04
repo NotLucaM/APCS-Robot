@@ -1,6 +1,7 @@
 package engine.window;
 
 import engine.input.Input;
+import objects.Pointer;
 import objects.Robot;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -69,6 +70,7 @@ public class OpenGLWindow {
         GLFW.glfwSwapInterval(1);
         glfwShowWindow(window);
 
+        addObject(new Pointer());
         addObject(new Robot(-1, -0.5, 0.1, 0.1));
 
         this.loop();
@@ -119,6 +121,17 @@ public class OpenGLWindow {
         glVertex2d(x + sX, y + sY);
         glVertex2d(x, y + sY);
 
+        glEnd();
+    }
+
+    public void fillOval(double x, double y, double sX, double sY) {
+        x += sX / 2;
+        y += sY / 2;
+        int sides = (int) (sX + sY) / 4 + 5;
+        glBegin(GL_TRIANGLE_FAN);
+        for (double i = 0; i < Math.PI * 2; i += Math.PI * 2 / sides) {
+            glVertex2d(x + Math.cos(i) * sX / 2, y + Math.sin(i) * sY / 2);
+        }
         glEnd();
     }
 

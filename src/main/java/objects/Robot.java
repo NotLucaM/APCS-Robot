@@ -5,18 +5,18 @@ import engine.window.*;
 public class Robot implements GameObject {
 
     private double x, y, sX, sY;
-    private double wantedX = 0.7, wantedY;
+    private double wantedX = 0.5, wantedY;
     private long lastTime;
 
     private double force;
     private double velocity;
-    private double acceleration = 0.1;
+    private double acceleration = 0;
     private double mass = 10;
-    private double friction = 0.001;
+    private double friction = 0.05;
 
     private double maxSpeed = 0.1;
 
-    private double pX = 0.001, iX = 0, dX = 0;
+    private double pX = 0.007, iX = 0.00001, dX = 0.065, iMaxX = 0;
     private double pY, iY, dY;
     private double integralX, integralY;
     private double lastEX, lastEY;
@@ -38,9 +38,13 @@ public class Robot implements GameObject {
     @Override
     public void update(State state) {
         long deltaTime = 1;
-        acceleration = pidX(deltaTime) - friction;
+        double pid = pidX(deltaTime);
+//        double force = Math.signum(pid) * (Math.abs(pid) * mass - Math.min(Math.abs(pid) + Math.abs(velocity), friction * mass * 9.8));
+        double force = pid * mass - Math.signum(pid + velocity) * Math.min(friction * mass * 9.8, Math.abs(pid + velocity));
+        acceleration = force / mass;
         velocity = velocity + acceleration * deltaTime;
         x += velocity * deltaTime;
+        System.out.printf("%.7f %.7f %.7f %.7f %.3f\n", pid, force, acceleration, velocity, x);
     }
 
     public double pidX(long deltaTime) {
@@ -51,6 +55,6 @@ public class Robot implements GameObject {
         lastEX = error;
         integralX = integral;
 
-        return pX * error + iX * integral + dX * derivative;
+        return pX * error + Math.min(iX * integral, iMaxX) + dX * derivative;
     }
 }
