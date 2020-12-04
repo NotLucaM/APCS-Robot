@@ -74,9 +74,12 @@ public class OpenGLWindow {
         glfwShowWindow(window);
 
         addObject(new Pointer(-1));
-        addObject(new Robot(-1, -0.5, 0.1, 0.1,
+        addObject(new Robot(-1, -0.5, 0.1, 0.1, 0.0175, 0, 0.1,
                 new Graph(-0.98, -0.98, 1.9, 0.2, -1, 1, new Color(255, 0, 0)),
                 new Graph(-0.98, -0.98, 1.9, 0.2, -1, 1, new Color(0, 255, 0))));
+        addObject(new Robot(-1, 0.5, 0.1, 0.1, 0.1, 0, 0));
+        addObject(new Robot(-1, 0.7, 0.1, 0.1, 0.01, 0, 0.3));
+        addObject(new Robot(-1, 0.3, 0.1, 0.1, 0.001, 0, 0));
 
         this.loop();
     }

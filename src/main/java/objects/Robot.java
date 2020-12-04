@@ -5,36 +5,33 @@ import engine.window.*;
 public class Robot implements GameObject {
 
     private double x, y, sX, sY;
-    private double wantedX, wantedY;
+    private double wantedX;
     private long lastTime;
 
-    private double force;
     private double velocity;
     private double acceleration = 0;
     private double mass = 10;
     private double friction = 0.05;
 
-    private double maxSpeed = 0.1;
-
-    private double pX = 0.007, iX = 0.00001, dX = 0.065, iMaxX = 0;
-//    private double pX = 0.05, iX = 0.00001, dX = 0, iMaxX = 0;
-    private double pY, iY, dY;
-    private double integralX, integralY;
-    private double lastEX, lastEY;
+    private double p, i, d, iMax = Double.MAX_VALUE;
+    private double integral;
+    private double lastError;
 
     private Graph wantedGraph, xGraph;
 
-    public Robot(double x, double y, double sX, double sY) {
-        this(x, y, sX, sY, null, null);
+    public Robot(double x, double y, double sX, double sY, double p, double i, double d) {
+        this(x, y, sX, sY, p, i, d, null, null);
     }
 
-    public Robot(double x, double y, double sX, double sY, Graph wantedGraph, Graph xGraph) {
+    public Robot(double x, double y, double sX, double sY, double p, double i, double d, Graph wantedGraph, Graph xGraph) {
         this.x = x;
         this.wantedX = x;
-        this.wantedY = y;
         this.y = y;
         this.sX = sX;
         this.sY = sY;
+        this.p = p;
+        this.i = i;
+        this.d = d;
         this.lastTime = System.currentTimeMillis();
 
         this.wantedGraph = wantedGraph;
@@ -59,7 +56,7 @@ public class Robot implements GameObject {
         }
 
         long deltaTime = 1;
-        double pid = pidX(deltaTime);
+        double pid = pid(deltaTime);
         double force = pid * mass - Math.signum(pid + velocity) * Math.min(friction * mass * 9.8, Math.abs(pid + velocity));
         acceleration = force / mass;
         velocity = velocity + acceleration * deltaTime;
@@ -72,14 +69,14 @@ public class Robot implements GameObject {
 //        System.out.printf("%.7f %.7f %.7f %.7f %.3f\n", pid, force, acceleration, velocity, x);
     }
 
-    public double pidX(long deltaTime) {
+    public double pid(long deltaTime) {
         double error = wantedX - x;
-        double integral = (error + integralX) * deltaTime;
-        double derivative = (error - lastEX) / deltaTime;
+        double integral = (error + this.integral) * deltaTime;
+        double derivative = (error - lastError) / deltaTime;
 
-        lastEX = error;
-        integralX = integral;
+        lastError = error;
+        this.integral = integral;
 
-        return pX * error + Math.min(iX * integral, iMaxX) + dX * derivative;
+        return p * error + Math.min(i * integral, iMax) + d * derivative;
     }
 }
