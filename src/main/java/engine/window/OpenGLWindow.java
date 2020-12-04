@@ -65,14 +65,15 @@ public class OpenGLWindow {
             IntBuffer pWidth = stack.mallocInt(1); // int*
             IntBuffer pHeight = stack.mallocInt(1); // int*
             glfwGetWindowSize(window, pWidth, pHeight);
-            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor()); // VidMode gets data like refresh rate from the monitor
             glfwSetWindowPos(window, (vidmode.width() - pWidth.get(0)) / 2, (vidmode.height() - pHeight.get(0)) / 2);
         } // I believe they get automatically freed after the try block
 
-        glfwMakeContextCurrent(window);
-        GLFW.glfwSwapInterval(1);
-        glfwShowWindow(window);
+        glfwMakeContextCurrent(window); // Sets the OpenGL context to our window
+        GLFW.glfwSwapInterval(1); // Screen updates to wait between swapping
+        glfwShowWindow(window); // Shows the window
 
+        // Adding our objects to our object ArrayList
         addObject(new Pointer(-1));
         addObject(new Robot(-1, -0.5, 0.1, 0.1, 0.0175, 0, 0.1,
                 new Graph(-0.98, -0.98, 1.9, 0.2, -1, 1, new Color(255, 0, 0)),
@@ -81,16 +82,21 @@ public class OpenGLWindow {
         addObject(new Robot(-1, 0.7, 0.1, 0.1, 0.01, 0, 0.3));
         addObject(new Robot(-1, 0.3, 0.1, 0.1, 0.001, 0, 0));
 
+        // Starting the loop
         this.loop();
     }
 
     private void loop() {
+        // openGL needs this line in order to function
         GL.createCapabilities();
+        // Setting the background color
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
         State state = new State();
 
         while (!glfwWindowShouldClose(window)) {
+            // First get events (mouse location and keys pressed) then update the state to hold those updates
+            // Afterwards, update all of the objects and then draw them.
             glfwPollEvents();
             state.update(this);
             updater.update(state);

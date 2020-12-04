@@ -1,5 +1,8 @@
 package engine.window;
 
+/**
+ * Helper class
+ */
 public class Color {
 
     public double r, g, b, a;

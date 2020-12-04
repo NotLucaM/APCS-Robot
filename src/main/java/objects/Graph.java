@@ -36,6 +36,8 @@ public class Graph implements Drawable {
         window.drawPoints(points);
     }
 
+    // Adds a point to the graph and removes the first one.
+    // Afterwards it shifts all of the previous points to make room for the new one
     public void addPoint(double y) {
         points.remove(0);
         for (Vector2 v : points) {

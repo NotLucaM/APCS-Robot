@@ -51,10 +51,13 @@ public class Robot implements GameObject {
 
     @Override
     public void update(State state) {
+        // If we click, set the wanted x to that location
         if (state.mousePressed) {
             wantedX = state.mouseX;
         }
 
+        // currently the values are tuned to work with a time of 1 between frames,
+        // switching to timeMillis or timeNana would require every value to be smaller
         long deltaTime = 1;
         double pid = pid(deltaTime);
         double force = pid * mass - Math.signum(pid + velocity) * Math.min(friction * mass * 9.8, Math.abs(pid + velocity));
@@ -62,21 +65,25 @@ public class Robot implements GameObject {
         velocity = velocity + acceleration * deltaTime;
         x += velocity * deltaTime;
 
+        // If we have a graph we output to, add it there
         if (xGraph != null && wantedGraph != null) {
             xGraph.addPoint(x);
             wantedGraph.addPoint(wantedX);
         }
-//        System.out.printf("%.7f %.7f %.7f %.7f %.3f\n", pid, force, acceleration, velocity, x);
     }
 
     public double pid(long deltaTime) {
+        // define all the parts required
         double error = wantedX - x;
         double integral = (error + this.integral) * deltaTime;
         double derivative = (error - lastError) / deltaTime;
 
+        // update the parts needed for the next cycle
         lastError = error;
         this.integral = integral;
 
+        // apply the coefficients. iMax is used in order to make sure that the integral doesn't get too large
+        // At the moment it is hardcoded to Double.MAX_VALUE and will not get in the way.
         return p * error + Math.min(i * integral, iMax) + d * derivative;
     }
 }

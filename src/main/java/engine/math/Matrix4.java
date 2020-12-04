@@ -5,6 +5,9 @@ import org.lwjgl.BufferUtils;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
+/**
+ * @deprecated Not used anymore, was needed for the previous code which involved textures
+ */
 public class Matrix4 {
 
     static final int size = 4 * 4; // not writing 16 to make it obv that its a 4x4 matrix instead of a 2x8 matrix

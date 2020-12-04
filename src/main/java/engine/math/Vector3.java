@@ -1,5 +1,8 @@
 package engine.math;
 
+/**
+ * @deprecated Not used anymore, needed for the previous code which used textures
+ */
 public class Vector3 {
 
     public double x, y, z; // this is 2d, however z is used if it is above or below

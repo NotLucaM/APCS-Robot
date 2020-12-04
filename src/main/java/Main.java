@@ -1,5 +1,8 @@
 import engine.window.OpenGLWindow;
 
+/**
+ * Simple class to start the program
+ */
 public class Main {
 
     private final static int width = 1280;

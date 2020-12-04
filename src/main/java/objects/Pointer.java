@@ -5,6 +5,7 @@ import engine.window.OpenGLWindow;
 import engine.window.State;
 import engine.window.*;
 
+// Not a c pointer, but a vertical line showing where the target is
 public class Pointer implements GameObject {
 
     private double x;
