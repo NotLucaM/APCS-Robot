@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 import org.gradle.internal.os.OperatingSystem
@@ -17,6 +18,7 @@ switch (OperatingSystem.current()) {
 
 group 'org.apcs'
 version '0.1'
+mainClassName = "Main"
 
 repositories {
     mavenCentral()
