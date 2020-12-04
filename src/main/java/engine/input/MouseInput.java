@@ -6,7 +6,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class MouseInput extends GLFWMouseButtonCallback {
 
-    private final boolean[] buttonsPressed = new boolean[8];
+    private final boolean[] buttonsPressed = new boolean[65536];
 
     @Override
     public void invoke(long window, int button, int action, int mods) {
