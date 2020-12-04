@@ -1,6 +1,7 @@
 package objects;
 
 import engine.math.Vector2;
+import engine.window.Color;
 import engine.window.Drawable;
 import engine.window.OpenGLWindow;
 
@@ -12,10 +13,11 @@ public class Graph implements Drawable {
 
     // Not using a queue because every element will be seen by the drawPoints function
     private ArrayList<Vector2> points = new ArrayList<>();
-    private double x, y, sX, sY, r, g, b;
-    private double scale;
+    private Color color;
+    private double x, y, sX, sY;
+    private double start, end;
 
-    public Graph(double x, double y, double sX, double sY, double scale, double r, double g, double b) {
+    public Graph(double x, double y, double sX, double sY, double start, double end, Color color) {
         for (int i = 0; i < displayedPoints; i++) {
             points.add(new Vector2(x + sX / i, y));
         }
@@ -23,15 +25,14 @@ public class Graph implements Drawable {
         this.y = y;
         this.sX = sX;
         this.sY = sY;
-        this.scale = scale;
-        this.r = r;
-        this.g = g;
-        this.b = b;
+        this.start = start;
+        this.end = end;
+        this.color = color;
     }
 
     @Override
     public void draw(OpenGLWindow window) {
-        window.setColor(r, g, b);
+        window.setColor(color);
         window.drawPoints(points);
     }
 
@@ -40,6 +41,6 @@ public class Graph implements Drawable {
         for (Vector2 v : points) {
             v.x -= sX / displayedPoints;
         }
-        points.add(new Vector2(x + sX, this.y + y / scale * sY));
+        points.add(new Vector2(x + sX, this.y + (y - start) / ((end - start) * sX)));
     }
 }

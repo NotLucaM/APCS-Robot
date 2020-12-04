@@ -1,28 +1,19 @@
 package engine.window;
 
-import engine.input.Input;
+import engine.input.KeyboardInput;
 import engine.math.Vector2;
 import objects.Graph;
 import objects.Pointer;
 import objects.Robot;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 
-import java.awt.*;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
 
-import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
@@ -32,6 +23,7 @@ public class OpenGLWindow {
 
     private Drawer drawer = new Drawer();
     private Updater updater = new Updater();
+    private KeyboardInput keyboardInput = new KeyboardInput();
 
     private int width, height;
     private String name;
@@ -60,7 +52,7 @@ public class OpenGLWindow {
             throw new RuntimeException("Failed to create the GLFW window");
         }
 
-        glfwSetKeyCallback(window, new Input());
+        glfwSetKeyCallback(window, keyboardInput);
 
         try (MemoryStack stack = stackPush()) {
             IntBuffer pWidth = stack.mallocInt(1); // int*
@@ -68,7 +60,7 @@ public class OpenGLWindow {
             glfwGetWindowSize(window, pWidth, pHeight);
             GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
             glfwSetWindowPos(window, (vidmode.width() - pWidth.get(0)) / 2, (vidmode.height() - pHeight.get(0)) / 2);
-        }
+        } // I believe they get automatically freed after the try block
 
         glfwMakeContextCurrent(window);
         GLFW.glfwSwapInterval(1);
@@ -76,8 +68,8 @@ public class OpenGLWindow {
 
         addObject(new Pointer());
         addObject(new Robot(-1, -0.5, 0.1, 0.1,
-                new Graph(-0.98, -0.98, 1.9, 0.2, 1, 255, 0, 0),
-                new Graph(-0.98, -0.98, 1.9, 0.2, 1, 0, 255, 0)));
+                new Graph(-0.98, -0.98, 1.9, 0.2, -1, 1, new Color(255, 0, 0)),
+                new Graph(-0.98, -0.98, 1.9, 0.2, -1, 1, new Color(0, 255, 0))));
 
         this.loop();
     }
@@ -109,6 +101,10 @@ public class OpenGLWindow {
         }
 
         GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, mouse);
+    }
+
+    public void setColor(Color color) {
+        glColor4d(color.r / 255, color.g / 255, color.b / 255, color.a / 255); // OpenGL uses percentages
     }
 
     public void setColor(double r, double g, double b, double a) {
