@@ -22,6 +22,10 @@ public class Robot implements GameObject {
     private double lastEX, lastEY;
 
     public Robot(double x, double y, double sX, double sY) {
+        this(x, y, sX, sY, null, null);
+    }
+
+    public Robot(double x, double y, double sX, double sY, Graph wantedGraph, Graph xGraph) {
         this.x = x;
         this.y = y;
         this.sX = sX;

@@ -2,18 +2,19 @@ package engine.math;
 
 import org.lwjgl.BufferUtils;
 
+import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
 public class Matrix4 {
 
     static final int size = 4 * 4; // not writing 16 to make it obv that its a 4x4 matrix instead of a 2x8 matrix
-    public float[] elements = new float[size]; // not and array of arrays because its a constant size
+    public double[] elements = new double[size]; // not and array of arrays because its a constant size
 
     public Matrix4() {
 
     }
 
-    public Matrix4(float[] elements) {
+    public Matrix4(double[] elements) {
         if (elements.length == size) {
             this.elements = elements;
         } else {
@@ -22,7 +23,7 @@ public class Matrix4 {
     }
 
     public static Matrix4 identity() {
-        return new Matrix4(new float[]{1, 0, 0, 0,
+        return new Matrix4(new double[]{1, 0, 0, 0,
                                        0, 1, 0, 0,
                                        0, 0, 1, 0,
                                        0, 0, 0, 1});
@@ -78,7 +79,7 @@ public class Matrix4 {
         return result;
     }
 
-    public FloatBuffer toFloatBuffer() {
-        return BufferUtils.createFloatBuffer(size).put(elements).flip();
+    public DoubleBuffer toDoubleBuffer() {
+        return BufferUtils.createDoubleBuffer(size).put(elements).flip();
     }
 }

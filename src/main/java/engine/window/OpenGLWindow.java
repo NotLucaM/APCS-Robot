@@ -1,6 +1,8 @@
 package engine.window;
 
 import engine.input.Input;
+import engine.math.Vector2;
+import objects.Graph;
 import objects.Pointer;
 import objects.Robot;
 import org.lwjgl.glfw.GLFW;
@@ -12,6 +14,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 
+import java.awt.*;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
@@ -66,12 +69,14 @@ public class OpenGLWindow {
             GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
             glfwSetWindowPos(window, (vidmode.width() - pWidth.get(0)) / 2, (vidmode.height() - pHeight.get(0)) / 2);
         }
+
         glfwMakeContextCurrent(window);
         GLFW.glfwSwapInterval(1);
         glfwShowWindow(window);
 
         addObject(new Pointer());
         addObject(new Robot(-1, -0.5, 0.1, 0.1));
+        addObject(new Graph(-0.98, -0.98, 1.9, 0.2, 1));
 
         this.loop();
     }
@@ -131,6 +136,14 @@ public class OpenGLWindow {
         glBegin(GL_TRIANGLE_FAN);
         for (double i = 0; i < Math.PI * 2; i += Math.PI * 2 / sides) {
             glVertex2d(x + Math.cos(i) * sX / 2, y + Math.sin(i) * sY / 2);
+        }
+        glEnd();
+    }
+
+    public void drawPoints(ArrayList<Vector2> points) {
+        glBegin(GL_LINE_STRIP);
+        for (Vector2 point : points) {
+            glVertex2d(point.x, point.y);
         }
         glEnd();
     }
