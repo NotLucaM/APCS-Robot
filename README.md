@@ -4,13 +4,13 @@ APCS Robot Project
 Running
 -------
 
-####Running in repl.it
+#### Running in repl.it
 
 To run in repl.it you need to first type "./gradlew build" in the terminal.
 After that runs, you will need to use "./gradlew run" to run the program.
 The graphics on repl are very slow so there might be clipping or weird graphics.
 
-####Running in terminal
+#### Running in terminal
 
 Follow the same instructions as repl.it. Will not work on Mac OS as a specific argument must be set.
 I do not know how to set this with gradle.
@@ -18,7 +18,7 @@ On Linux run "./gradlew build" and "./gradlew run".
 On Windows the commands should be similar (still uses gradle) however the syntax might be different.
 I am not familiar with the windows command line, so I can't confirm if this works.
 
-####Running in IntelliJ
+#### Running in IntelliJ
 
 When importing the project, click the build.gradle file and click yes on import as project.
 Wait for IntelliJ to index everything and then run the Main.java class normally.
