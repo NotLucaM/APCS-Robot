@@ -59,7 +59,7 @@ public class Robot implements GameObject {
         }
 
         // currently the values are tuned to work with a time of 1 between frames,
-        // switching to timeMillis or timeNana would require every value to be smaller
+        // switching to timeMillis or timeNano would require every value to be smaller
         long deltaTime = 1;
         double pid = pid(deltaTime);
         double force = pid * mass - Math.signum(pid + velocity) * Math.min(friction * mass * 9.8, Math.abs(pid + velocity));
